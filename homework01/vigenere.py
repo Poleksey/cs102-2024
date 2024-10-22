@@ -69,7 +69,7 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
                 plaintext += char
             i += 1
     return plaintext
-
+#
 
 print("введите текст и ключ для текста")
 print(encrypt_vigenere(plaintext=input(), keyword=input()))
