@@ -43,13 +43,13 @@ def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
     plaintext = ""
     i = 0
     for char in ciphertext:
-            i += 1
-            if ord(char) in range(65, 91):
-                plaintext += chr((ord(char) - 65 - shift) % 26 + 65)
-            elif ord(char) in range(97, 123):
-                plaintext += chr((ord(char) - 97 - shift) % 26 + 97)
-            else:
-                plaintext += char
+        i += 1
+        if ord(char) in range(65, 91):
+            plaintext += chr((ord(char) - 65 - shift) % 26 + 65)
+        elif ord(char) in range(97, 123):
+            plaintext += chr((ord(char) - 97 - shift) % 26 + 97)
+        else:
+            plaintext += char
     return plaintext
 
 
