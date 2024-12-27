@@ -1,4 +1,8 @@
-"""asd"""
+"""Модуль состоящий из одной функции"""
+
+
 def text():
-    """asd"""
-    return "message"
+    """Функция, возвращающая 'Hello Wrold!'"""
+
+    message = "Hello, World!"
+    return message
