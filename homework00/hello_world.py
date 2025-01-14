@@ -2,7 +2,8 @@
 
 
 def text():
-    """Функция, возвращающая 'Hello Wrold!'"""
+    """Функция, возвращающая 'message'"""
+    return "message"
 
-    message = "Hello, World!"
-    return message
+
+print(text())
