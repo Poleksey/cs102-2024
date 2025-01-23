@@ -22,28 +22,108 @@ class GameOfLife:
         # Предыдущее поколение клеток
         self.prev_generation = self.create_grid()
         # Текущее поколение клеток
-        self.curr_generation = self.create_grid(randomize=randomize)
+        self.curr_generation = self.create_grid(randomize=True)
         # Максимальное число поколений
         self.max_generations = max_generations
         # Текущее число поколений
         self.generations = 1
 
     def create_grid(self, randomize: bool = False) -> Grid:
-        # Copy from previous assignment
-        pass
+        """
+        Создание списка клеток.
+
+        Клетка считается живой, если ее значение равно 1, в противном случае клетка
+        считается мертвой, то есть, ее значение равно 0.
+
+        Parameters
+        ----------
+        randomize : bool
+            Если значение истина, то создается матрица, где каждая клетка может
+            быть равновероятно живой или мертвой, иначе все клетки создаются мертвыми.
+
+        Returns
+        ----------
+        out : Grid
+            Матрица клеток размером `cell_height` х `cell_width`.
+        """
+
+        grid = [[0] * self.cols for _ in range(self.rows)]
+        if not randomize:
+            return grid
+        for y in range(self.rows):
+            for x in range(self.cols):
+                grid[y][x] = random.randint(0, 1)
+
+        return grid
 
     def get_neighbours(self, cell: Cell) -> Cells:
-        # Copy from previous assignment
-        pass
+        """
+        Вернуть список соседних клеток для клетки `cell`.
+
+        Соседними считаются клетки по горизонтали, вертикали и диагоналям,
+        то есть, во всех направлениях.
+
+        Parameters
+        ----------
+        cell : Cell
+            Клетка, для которой необходимо получить список соседей. Клетка
+            представлена кортежем, содержащим ее координаты на игровом поле.
+
+        Returns
+        ----------
+        out : Cells
+            Список соседних клеток.
+        """
+        cells = []
+        y_loc, x_loc = cell[0], cell[1]
+
+        try:
+            for y in range(y_loc - 1, y_loc + 2):
+                for x in range(x_loc - 1, x_loc + 2):
+                    if (y, x) != cell and 0 <= y < self.rows and 0 <= x < self.cols:
+                        cells.append(self.curr_generation[y][x])
+        except:
+            IndexError
+        return cells
 
     def get_next_generation(self) -> Grid:
-        # Copy from previous assignment
-        pass
+        """
+        Вернуть список соседних клеток для клетки `cell`.
+
+        Соседними считаются клетки по горизонтали, вертикали и диагоналям,
+        то есть, во всех направлениях.
+
+        Parameters
+        ----------
+        cell : Cell
+            Клетка, для которой необходимо получить список соседей. Клетка
+            представлена кортежем, содержащим ее координаты на игровом поле.
+
+        Returns
+        ----------
+        out : Cells
+            Список соседних клеток.
+        """
+        new_grid = [[0] * self.cols for _ in range(self.rows)]
+        for y, row in enumerate(self.curr_generation):
+            for x, _ in enumerate(row):
+
+                alive_neighbours = sum(self.get_neighbours((y, x)))
+                if alive_neighbours in (2, 3) and self.curr_generation[y][x] == 1:
+                    new_grid[y][x] = 1
+                elif alive_neighbours == 3 and self.curr_generation[y][x] == 0:
+                    new_grid[y][x] = 1
+                if alive_neighbours > 3:
+                    new_grid[y][x] = 0
+        return new_grid
 
     def step(self) -> None:
         """
         Выполнить один шаг игры.
         """
+        self.prev_generation = self.curr_generation
+        self.curr_generation = self.get_next_generation()
+        self.generations += 1
         pass
 
     @property
@@ -51,24 +131,45 @@ class GameOfLife:
         """
         Не превысило ли текущее число поколений максимально допустимое.
         """
-        pass
+        if self.generations > self.max_generations:
+            return True
+        else:
+            return False
 
     @property
     def is_changing(self) -> bool:
         """
         Изменилось ли состояние клеток с предыдущего шага.
         """
-        pass
+        if self.curr_generation == self.prev_generation:
+            return True
+        else:
+            return False
 
     @staticmethod
     def from_file(filename: pathlib.Path) -> "GameOfLife":
         """
         Прочитать состояние клеток из указанного файла.
         """
-        pass
+        with filename.open("r") as gen_from_file:
+            container = gen_from_file.read()
+        lines = container.split()
+        for i in range(len(lines)):
+            lines[i] = list(lines[i])
+        game = GameOfLife(size=((len(lines)), len(lines[0])))
+        game.curr_generation = lines
+        return game
 
     def save(self, filename: pathlib.Path) -> None:
         """
         Сохранить текущее состояние клеток в указанный файл.
         """
+        with open("filename", "w") as f:
+            toster = []
+            for i in self.curr_generation:
+                i[0] = "".join(map(str, i))
+                i = i[:1]
+                toster.append(i)
+            for result in toster:
+                print(result[0], file=f, sep="n")
         pass
