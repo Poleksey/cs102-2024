@@ -16,6 +16,7 @@ class GameOfLife:
         size: tp.Tuple[int, int],
         randomize: bool = True,
         max_generations: tp.Optional[float] = float("inf"),
+        curr_generation: tp.List[Cells] = None, 
     ) -> None:
         # Размер клеточного поля
         self.rows, self.cols = size
@@ -154,7 +155,7 @@ class GameOfLife:
         lines = container.split()
         for i in range(len(lines)):
             lines[i] = [int(a) for a in lines[i]]
-        game = GameOfLife(size=((len(lines)), len(lines[0])))
+        game = GameOfLife(size=((len(lines)), len(lines[0])), curr_generation=lines)
         game.curr_generation = lines
         return game
 
@@ -163,11 +164,11 @@ class GameOfLife:
         Сохранить текущее состояние клеток в указанный файл.
         """
         with open(filename, "w") as f:
-            toster = []
+            steck = []
             for i in self.curr_generation:
                 i[0] = "".join(map(str, i))
                 i = i[:1]
-                toster.append(i)
-            for result in toster:
+                steck.append(i)
+            for result in steck:
                 print(result[0], file=f, sep="n")
         pass
