@@ -35,7 +35,7 @@ class Console(UI):
             screen.clear()
             self.draw_borders(screen)
             self.draw_grid(screen)
-
+            screen.nodelay(True)
             screen.refresh()
             self.life.step()
 
@@ -49,8 +49,7 @@ class Console(UI):
                 screen.refresh()
                 break
             key = screen.getch()
-
-            if key == ord("d"):
+            if key != -1 and key == ord("d"):
                 running = False
                 break
         curses.endwin()
