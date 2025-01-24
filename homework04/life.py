@@ -137,7 +137,7 @@ class GameOfLife:
     @property
     def is_changing(self) -> bool:
         """
-        Изменилось ли состояние клеток с предыдущего шага.
+        Изменилось ли   состояние клеток с предыдущего шага.
         """
         if self.curr_generation == self.prev_generation:
             return True
