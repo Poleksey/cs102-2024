@@ -16,7 +16,6 @@ class GameOfLife:
         size: tp.Tuple[int, int],
         randomize: bool = True,
         max_generations: tp.Optional[float] = float("inf"),
-        curr_generation: tp.List[Cells] = None,
     ) -> None:
         # Размер клеточного поля
         self.rows, self.cols = size
@@ -155,7 +154,7 @@ class GameOfLife:
         lines = container.split()
         for i in range(len(lines)):
             lines[i] = [int(a) for a in lines[i]]
-        game = GameOfLife(size=((len(lines)), len(lines[0])), curr_generation=lines)
+        game = GameOfLife(size=((len(lines)), len(lines[0])))
         game.curr_generation = lines
         return game
 
