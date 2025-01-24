@@ -13,7 +13,6 @@ class Console(UI):
         """Отобразить рамку."""
         screen.border(0)
         pass
-        
 
     def draw_grid(self, screen) -> None:
         """Отобразить состояние клеток."""
