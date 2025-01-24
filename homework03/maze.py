@@ -91,6 +91,7 @@ def get_exits(grid: List[List[Union[str, int]]]) -> List[Tuple[int, int]]:
     # ВОЗВРАЩАЕТ Y ПОТОМ X/ '
     return in_out
 
+
 def encircled_exit(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) -> bool:
     """
 
