@@ -6,6 +6,10 @@ from ui import UI
 
 
 class GUI(UI):
+    """
+    Графический компонент игры
+    """
+
     def __init__(self, life: GameOfLife, cell_size: int = 10, speed: int = 10) -> None:
         super().__init__(life)
         self.cell_size = cell_size
@@ -13,15 +17,16 @@ class GUI(UI):
         self.height = self.life.rows * 10
 
         self.screen_size = self.width, self.height
-
         self.screen = pygame.display.set_mode(self.screen_size)
 
         self.cell_width = self.width // self.cell_size
         self.cell_height = self.height // self.cell_size
 
         self.speed = speed
+        self.is_game_paused = False
 
     def draw_lines(self) -> None:
+        """Отобразить линии сетки."""
         for x in range(0, self.width, self.cell_size):
             pygame.draw.line(self.screen, pygame.Color("black"), (x, 0), (x, self.height))
         for y in range(0, self.height, self.cell_size):
@@ -29,6 +34,7 @@ class GUI(UI):
         pass
 
     def draw_grid(self) -> None:
+        """Отобразить значения на поле игры."""
         for y, row in enumerate(self.life.curr_generation):
             for x, el in enumerate(row):
                 if el == 1:
@@ -40,43 +46,43 @@ class GUI(UI):
         pass
 
     def run(self) -> None:
+        """
+        Функция, приводящая в работу компоненты графики.
+        """
         pygame.init()
         clock = pygame.time.Clock()
         pygame.display.set_caption("Game of Life")
         self.screen.fill(pygame.Color("white"))
-
-        is_game_paused = False
         running = True
         while running:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     running = False
 
-                elif event.type == pygame.KEYDOWN:
-                    # При нажатии на пробел изменяем состояние игры
+                if event.type == pygame.KEYDOWN:
+                    # При нажатии на пробел изменяется состояние игры
                     if event.key == pygame.K_SPACE:
-                        is_game_paused = not is_game_paused
+                        self.is_game_paused = not self.is_game_paused
+
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_pos = event.pos
+                    if self.is_game_paused:
+                        y_loc = mouse_pos[0] // self.cell_size
+                        x_loc = mouse_pos[1] // self.cell_size
+                        self.life.curr_generation[y_loc][x_loc] = 1 - self.life.curr_generation[y_loc][x_loc]
+
             # Отрисовка списка клеток
-
-            if not is_game_paused:
-                self.draw_grid()
-                self.draw_lines()
+            self.screen.fill(pygame.Color("white"))
+            self.draw_grid()
+            self.draw_lines()
+            if not self.is_game_paused:
                 self.life.step()
-                pygame.display.flip()
-                clock.tick(self.speed)
-            pause_button_rect = pygame.Rect(20, 20, 100, 50)
-            pygame.draw.rect(self.screen, "black", pause_button_rect)
-
-            if is_game_paused:
-                pause_text = "Возобновить"
-            else:
-                pause_text = "Пауза"
-            pause_button_text = pygame.font.Font(None, 36).render(pause_text, True, "white")
-            self.screen.blit(pause_button_text, (pause_button_rect.x + 20, pause_button_rect.y + 10))
+            pygame.display.flip()
+            clock.tick(self.speed)
         pygame.quit()
         pass
 
 
-game = GameOfLife((100, 100), 400)
+game = GameOfLife((100, 100), True, 400)
 gui = GUI(game)
 gui.run()

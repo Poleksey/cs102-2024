@@ -1,3 +1,7 @@
+"""
+Модуль, реализующий базовые компоненты game of life
+"""
+
 import copy
 import random
 import typing as tp
@@ -11,6 +15,10 @@ Grid = tp.List[Cells]
 
 
 class GameOfLife:
+    """
+    Класс хранящий логические и графические компоненты игры
+    """
+
     def __init__(self, width: int = 640, height: int = 480, cell_size: int = 10, speed: int = 1500) -> None:
         self.width = width
         self.height = height
@@ -90,7 +98,6 @@ class GameOfLife:
                     color = pygame.Color("white")
                 rect = pygame.Rect(y * self.cell_size, x * self.cell_size, self.cell_size, self.cell_size)
                 pygame.draw.rect(self.screen, color, rect)
-
 
     def get_neighbours(self, cell: Cell) -> Cells:
         """

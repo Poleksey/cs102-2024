@@ -13,26 +13,7 @@ class Console(UI):
         """Отобразить рамку."""
         screen.border(0)
         pass
-        # x, y, width, height = 0, 0, self.life.cols+1, self.life.rows+1
-
-        # Рисуем верхнюю и нижнюю линии
-        # screen.addch(y, x, "█")
-        # screen.addch(y, x + width, "█")
-        # screen.addch(y + height, x, "█")
-        # screen.addch(y + height, x + width, "█")
-
-        # # Рисуем левую и правую линии
-        # for i in range(y + 1, y + height):
-        #     screen.addch(i, x, "█")
-        #     screen.addch(i, x + width, "█")
-
-        # # Рисуем горизонтальные линии
-        # for i in range(x + 1, x + width):
-        #     screen.addch(y, i, "█")
-        #     screen.addch(y + height, i, "█")
-
-        # screen.refresh()
-        # pass
+        
 
     def draw_grid(self, screen) -> None:
         """Отобразить состояние клеток."""
@@ -45,6 +26,9 @@ class Console(UI):
         pass
 
     def run(self) -> None:
+        """
+        Функция, приводящая в работу компоненты графики для консоли.
+        """
         screen = curses.initscr()
 
         while 0 < 1:
@@ -66,13 +50,9 @@ class Console(UI):
                 break
             key = screen.getch()
 
-            if key == ord("q"):
+            if key == ord("d"):
                 running = False
                 break
-            # key = screen.getch()
-            # if key != curses.ERR:
-            # # Если была нажата клавиша, выйти из цикла
-            #      break
         curses.endwin()
         pass
 

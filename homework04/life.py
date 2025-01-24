@@ -77,13 +77,11 @@ class GameOfLife:
         cells = []
         y_loc, x_loc = cell[0], cell[1]
 
-        try:
-            for y in range(y_loc - 1, y_loc + 2):
-                for x in range(x_loc - 1, x_loc + 2):
-                    if (y, x) != cell and 0 <= y < self.rows and 0 <= x < self.cols:
-                        cells.append(self.curr_generation[y][x])
-        except:
-            IndexError
+        for y in range(y_loc - 1, y_loc + 2):
+            for x in range(x_loc - 1, x_loc + 2):
+                if (y, x) != cell and 0 <= y < self.rows and 0 <= x < self.cols:
+                    cells.append(self.curr_generation[y][x])
+
         return cells
 
     def get_next_generation(self) -> Grid:
@@ -151,11 +149,11 @@ class GameOfLife:
         """
         Прочитать состояние клеток из указанного файла.
         """
-        with filename.open("r") as gen_from_file:
+        with open(filename, "r") as gen_from_file:
             container = gen_from_file.read()
         lines = container.split()
         for i in range(len(lines)):
-            lines[i] = list(lines[i])
+            lines[i] = [int(a) for a in lines[i]]
         game = GameOfLife(size=((len(lines)), len(lines[0])))
         game.curr_generation = lines
         return game
@@ -164,7 +162,7 @@ class GameOfLife:
         """
         Сохранить текущее состояние клеток в указанный файл.
         """
-        with open("filename", "w") as f:
+        with open(filename, "w") as f:
             toster = []
             for i in self.curr_generation:
                 i[0] = "".join(map(str, i))
