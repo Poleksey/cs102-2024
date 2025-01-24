@@ -129,7 +129,8 @@ class GameOfLife:
         """
         Не превысило ли текущее число поколений максимально допустимое.
         """
-        if self.generations > self.max_generations:
+
+        if self.max_generations is not None and self.generations > self.max_generations:
             return True
         else:
             return False
@@ -151,11 +152,15 @@ class GameOfLife:
         """
         with open(filename, "r") as gen_from_file:
             container = gen_from_file.read()
+
         lines = container.split()
+        repo_of_lines: list[list] = []
+
         for i in range(len(lines)):
-            lines[i] = [int(a) for a in lines[i]]
+            element = list(lines[i])
+            repo_of_lines.append(element)
         game = GameOfLife(size=((len(lines)), len(lines[0])))
-        game.curr_generation = lines
+        game.curr_generation = repo_of_lines
         return game
 
     def save(self, filename: pathlib.Path) -> None:
@@ -165,9 +170,8 @@ class GameOfLife:
         with open(filename, "w") as f:
             steck = []
             for i in self.curr_generation:
-                i[0] = "".join(map(str, i))
-                i = i[:1]
-                steck.append(i)
+                temp_el = "".join(map(str, i))
+                steck.append(temp_el)
             for result in steck:
-                print(result[0], file=f, sep="n")
+                print(steck[0], file=f, sep="n")
         pass
